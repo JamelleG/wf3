@@ -83,6 +83,7 @@ impl<'a, 'b> Recipe<'a, 'b> for M2Recipe {
             Cmd::Up { detached } => Some(up::exec(&ctx, &env, detached, self.templates.clone())),
             Cmd::Eject => Some(eject::exec(&ctx, &env, self.templates.clone())),
             Cmd::Pull { trailing } => Some(self.pull(&ctx, trailing.clone())),
+            Cmd::Push { trailing } => Some(self.push(&ctx, trailing.clone())),
             Cmd::Down => Some(self.down(&ctx, &env)),
             Cmd::Stop => Some(self.stop(&ctx, &env)),
             Cmd::Exec { trailing, user } => Some(self.exec(&ctx, trailing, user.clone())),
@@ -260,5 +261,31 @@ impl M2Recipe {
                 command: create_command(file.clone()),
             })
             .collect()
+    }
+    ///
+    /// Push file into the docker container
+    ///
+    pub fn push(&self, ctx: &Context, trailing: Vec<String>) -> Vec<Task> {
+
+        let container_name = format!("wf2__{}__php", ctx.name);
+        let prefix = PathBuf::from("/var/www");
+
+        let create_command = |file: String| {
+            let path = prefix.join(file.clone());
+            let to = path.parent().unwrap_or(&prefix);
+            format!(
+                r#"docker cp {from} {container_name}:{to}"#,
+                container_name = container_name,
+                to = to.display(),
+                from = file
+                )
+        };
+
+        trailing
+            .iter()
+            .map(|file| Task::SimpleCommand {
+                command: create_command(file.clone()),
+            })
+        .collect()
     }
 }
