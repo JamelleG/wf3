@@ -45,7 +45,6 @@ pub trait M2Service {
 pub fn get_services(vars: &M2Vars, ctx: &Context) -> Vec<DcService> {
     vec![
         (UnisonService).dc_service(ctx, vars),
-        (TraefikService).dc_service(ctx, vars),
         (VarnishService).dc_service(ctx, vars),
         (NginxService).dc_service(ctx, vars),
         (PhpService).dc_service(ctx, vars),
