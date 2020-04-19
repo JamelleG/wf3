@@ -17,6 +17,8 @@ use services::get_services;
 use subcommands::m2_recipe_subcommands;
 use volumes::get_volumes;
 
+use crate::dc_network::DcNetwork;
+
 #[doc(hidden)]
 pub mod m2_runtime_env_file;
 #[doc(hidden)]
@@ -74,7 +76,9 @@ impl<'a, 'b> Recipe<'a, 'b> for M2Recipe {
 impl M2Recipe {
     pub fn dc_tasks(ctx: &Context) -> Result<DcTasks, failure::Error> {
         let vars = M2Vars::from_ctx(&ctx)?;
+        let network = DcNetwork::new_external("jamdev".to_owned()); 
         let dc = Dc::new()
+            .set_networks(&vec![network])
             .set_volumes(&get_volumes(&ctx))
             .set_services(&get_services(&vars, &ctx))
             .build();
@@ -84,7 +88,9 @@ impl M2Recipe {
 
     pub fn dc(ctx: &Context) -> Result<Dc, failure::Error> {
         let vars = M2Vars::from_ctx(&ctx)?;
+        let network = DcNetwork::new_external("jamdev".to_owned()); 
         Ok(Dc::new()
+            .set_networks(&vec![network])
             .set_volumes(&get_volumes(&ctx))
             .set_services(&get_services(&vars, &ctx))
             .build())

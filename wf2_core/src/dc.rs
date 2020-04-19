@@ -1,5 +1,6 @@
 use crate::dc_service::DcService;
 use crate::dc_volume::DcVolume;
+use crate::dc_network::DcNetwork;
 use std::collections::HashMap;
 
 ///
@@ -9,6 +10,7 @@ use std::collections::HashMap;
 pub struct Dc {
     pub version: String,
     pub volumes: Option<HashMap<String, DcVolume>>,
+    pub networks: Option<HashMap<String, DcNetwork>>,
     pub services: Option<HashMap<String, DcService>>,
 }
 
@@ -27,6 +29,14 @@ impl Dc {
             .map(|vol| (vol.display_name.clone(), vol.clone()))
             .collect::<HashMap<String, DcVolume>>();
         self.volumes = Some(as_hashmap);
+        self
+    }
+    pub fn set_networks(&mut self, networks: &[DcNetwork]) -> &mut Dc {
+        let as_hashmap = networks 
+            .iter()
+            .map(|network| (network.name.clone(), network.clone()))
+            .collect::<HashMap<String, DcNetwork>>();
+        self.networks = Some(as_hashmap);
         self
     }
     pub fn set_services(&mut self, services: &[DcService]) -> &mut Dc {

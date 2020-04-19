@@ -122,6 +122,8 @@ pub mod dc;
 #[doc(hidden)]
 pub mod dc_service;
 #[doc(hidden)]
+pub mod dc_network;
+#[doc(hidden)]
 pub mod dc_tasks;
 #[doc(hidden)]
 pub mod dc_volume;

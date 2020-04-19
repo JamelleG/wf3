@@ -3,6 +3,24 @@ use crate::dc_service::DcService;
 use crate::recipes::m2::m2_vars::{M2Var, M2Vars};
 use crate::recipes::m2::services::M2Service;
 
+pub struct TraefikServiceV2;
+
+impl TraefikServiceV2 {
+    pub fn route_to_svc(name: String,domain:String,tls: bool, port: u8) -> Vec<String> {        
+        let service_name = format!("{}_svc",name);
+        let val = vec![
+            format!("traefik.http.routers.{}.rule=Host(`{}`)", name, domain),
+            format!("traefik.http.routers.{}.service={}",name,service_name.to_owned()).to_string(),
+            format!("traefik.http.routers.{}.tls={}",name,tls),
+            format!("traefik.http.services.{}.loadBalancer.server.port={}",service_name,port),
+            "traefik.enable=true".to_owned()
+        ];
+        println!("{:?}",val);
+        val
+    }
+}
+
+
 pub struct TraefikService;
 
 impl TraefikService {
