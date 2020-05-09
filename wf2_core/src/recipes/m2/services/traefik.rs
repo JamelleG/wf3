@@ -15,7 +15,6 @@ impl TraefikServiceV2 {
             format!("traefik.http.services.{}.loadBalancer.server.port={}",service_name,port),
             "traefik.enable=true".to_owned()
         ];
-        println!("{:?}",val);
         val
     }
 }

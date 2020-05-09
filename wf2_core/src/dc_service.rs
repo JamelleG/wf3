@@ -69,7 +69,6 @@ impl DcService {
     }
     pub fn set_labels(&mut self, labels: Vec<impl Into<String>>) -> &mut Self {
         self.labels = Some(labels.into_iter().map(|x| x.into()).collect());
-        println!("{:?}",self.labels);
         self
     }
     pub fn set_env_file(&mut self, env_file: Vec<impl Into<String>>) -> &mut Self {

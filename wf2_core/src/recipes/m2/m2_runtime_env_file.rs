@@ -77,7 +77,7 @@ env_vars! {
     XDEBUG_PROFILER="0"
     XDEBUG_PROFILE_TRIGGER="1"
     XDEBUG_IDE_KEY="PHPSTORM"
-    XDEBUG_CONFIG="remote_host=docker.for.mac.host.internal"
+    XDEBUG_CONFIG="remote_host=docker-host"
     PHP_IDE_CONFIG="serverName=local.m2"
 
     BLACKFIRE_CLIENT_ID="12"
