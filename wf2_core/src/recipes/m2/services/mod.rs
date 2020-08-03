@@ -53,7 +53,6 @@ pub fn get_services(vars: &M2Vars, ctx: &Context) -> Vec<DcService> {
         (DbService).dc_service(ctx, vars),
         (RedisService).dc_service(ctx, vars),
         (RabbitMqService).dc_service(ctx, vars),
-        (MailService).dc_service(ctx, vars),
         (BlackfireService).dc_service(ctx, vars),
         (ElasticSearchService).dc_service(ctx, vars),
     ]
