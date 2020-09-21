@@ -6,17 +6,29 @@ use crate::recipes::m2::services::M2Service;
 pub struct TraefikServiceV2;
 
 impl TraefikServiceV2 {
-    pub fn route_to_svc(name: String,domain:String,tls: bool, port: u8) -> Vec<String> {        
+    pub fn route_to_svc(name: String,domain_string:String,tls: bool, port: u8) -> Vec<String> {        
         let service_name = format!("{}_svc",name);
-        let val = vec![
-            format!("traefik.http.routers.{}.rule=Host(`{}`)", name, domain),
-            format!("traefik.http.routers.{}.service={}",name,service_name.to_owned()).to_string(),
-            format!("traefik.http.routers.{}.tls={}",name,tls),
-            format!("traefik.http.services.{}.loadBalancer.server.port={}",service_name,port),
-            "traefik.enable=true".to_owned()
+
+        let domains: Vec<&str> = domain_string.split(',').collect();
+        let mut routes: Vec<String> = domains.iter().map(|domain| {
+            TraefikServiceV2::route_domain_to_svc(name.clone(), domain.to_string(), tls)
+        }).flatten().collect();
+        
+        let mut val = vec![
+            "traefik.enable=true".to_owned(),
+            format!("traefik.http.services.{}.loadBalancer.server.port={}",service_name,port)
         ];
-        println!("{:?}",val);
-        val
+        routes.append(&mut val);
+        routes
+    }
+    pub fn route_domain_to_svc(name: String,domain:String,tls: bool) -> Vec<String> {
+        let service_name = format!("{}_svc",name);
+        let sdomain = domain.replace('.', "-");
+        vec![
+            format!("traefik.http.routers.{}.rule=Host(`{}`)", sdomain, domain),
+            format!("traefik.http.routers.{}.service={}",sdomain,service_name.to_owned()).to_string(),
+            format!("traefik.http.routers.{}.tls={}",sdomain,tls),
+        ]
     }
 }
 
