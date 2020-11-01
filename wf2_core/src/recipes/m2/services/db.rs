@@ -18,7 +18,7 @@ impl DbService {
 
 impl M2Service for DbService {
     const NAME: &'static str = "db";
-    const IMAGE: &'static str = "mysql:5.6";
+    const IMAGE: &'static str = "mysql:5.7";
 
     fn dc_service(&self, ctx: &Context, vars: &M2Vars) -> DcService {
         DcService::new(ctx.name(), Self::NAME, Self::IMAGE)
