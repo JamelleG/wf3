@@ -25,12 +25,12 @@ impl M2Service for DbService {
             .set_volumes(vec![
                 format!("{}:{}", M2Volumes::DB, DbService::VOLUME_DATA),
                 format!(
-                    "{}:{}",
+                    "{}:{}:z",
                     vars.content[&M2Var::DbConfDir],
                     DbService::VOLUME_CONF
                 ),
                 format!(
-                    "{}:{}",
+                    "{}:{}:z",
                     vars.content[&M2Var::DbInitDir],
                     DbService::VOLUME_ENTRY
                 ),

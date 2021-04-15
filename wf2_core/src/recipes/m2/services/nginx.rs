@@ -16,7 +16,7 @@ impl M2Service for NginxService {
             .set_depends_on(vec![PhpService::NAME])
             .set_volumes(vec![
                 format!("{}:{}", M2Volumes::APP, Self::ROOT),
-                format!("{}:/etc/nginx/conf.d", vars.content[&M2Var::NginxDir]),
+                format!("{}:/etc/nginx/conf.d:z", vars.content[&M2Var::NginxDir]),
             ])
             .set_working_dir(Self::ROOT)
             .set_env_file(vec![vars.content[&M2Var::EnvFile].to_string()])
